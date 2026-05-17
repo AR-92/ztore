@@ -3,7 +3,7 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
-import { createIcons } from 'lucide';
+import { createIcons, icons } from 'lucide';
 import { playground, executeCode } from './engine.js';
 import { EXAMPLES } from './examples.js';
 import '../main.css';
@@ -78,7 +78,7 @@ clearAll.addEventListener("click", function() {
   playground.reset();
   codeEditor.setValue("");
   document.getElementById("statusText").textContent = "Reset";
-  createIcons();
+  createIcons({ icons });
 });
 
 tabBtns.forEach(function(btn) {
@@ -94,5 +94,5 @@ tabBtns.forEach(function(btn) {
   });
 });
 
-createIcons();
+createIcons({ icons });
 loadExample("agent");

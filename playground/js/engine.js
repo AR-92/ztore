@@ -1,5 +1,5 @@
 import { createStore } from '../../src/ztore.js';
-import { createIcons } from 'lucide';
+import { createIcons, icons } from 'lucide';
 
 // ============================================================
 // PLAYGROUND ENGINE
@@ -64,7 +64,7 @@ export const playground = {
     dot.className = "w-2 h-2 rounded-full inline-block " + (this.stores.size > 0 ? "bg-green-400" : "bg-gray-600");
     this.renderState();
     this.renderEvents();
-    createIcons();
+    createIcons({ icons });
   },
 
   renderState() {
@@ -178,7 +178,7 @@ function captureConsole(method, args) {
   container.appendChild(line);
   container.scrollTop = container.scrollHeight;
   while (container.children.length > 200) container.removeChild(container.firstChild);
-  createIcons();
+  createIcons({ icons });
 }
 
 console.log = function() { _console.log.apply(console, arguments); captureConsole("log", arguments); };
@@ -205,5 +205,5 @@ export function executeCode(code) {
     console.error(err);
     document.getElementById("statusText").textContent = "Error";
   }
-  createIcons();
+  createIcons({ icons });
 }
