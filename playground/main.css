@@ -90,6 +90,10 @@
 }
 .project-item:hover { color: #cccccc; }
 .project-item.active { color: #e5e7eb; }
+.project-item.active::before {
+  content: ''; position: absolute; left: 0; top: 1px; bottom: 1px;
+  width: 2px; background: #60a5fa; border-radius: 1px;
+}
 .project-item .proj-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ── File Tree with indent guides ── */
@@ -109,6 +113,10 @@
 }
 .file-item:hover { color: #bbbbbb; }
 .file-item.active { color: #e5e7eb; }
+.file-item.active::before {
+  content: ''; position: absolute; left: 0; top: 1px; bottom: 1px;
+  width: 2px; background: #60a5fa; border-radius: 1px;
+}
 
 /* Horizontal connector to icon */
 .file-item .tree-guide {

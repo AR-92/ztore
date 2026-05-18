@@ -63,6 +63,7 @@ function updateLineNumbers() {
 
 function highlightCode() {
   code.textContent = textarea.value;
+  delete code.dataset.highlighted;
   hljs.highlightElement(code);
 }
 
@@ -315,13 +316,12 @@ function loadActiveProject() {
   renderSidebar();
   renderOpenTabs();
   updateSaveStatus();
-  // Ensure Open Tabs section is expanded when a file is loaded
+  // Ensure Open Tabs and Explorer sections are expanded when loading a project
   var state = getSectionState();
-  if (!state.openTabs) {
-    state.openTabs = true;
-    saveSectionState(state);
-    applySectionState(state);
-  }
+  var changed = false;
+  if (!state.openTabs) { state.openTabs = true; changed = true; }
+  if (!state.explorer) { state.explorer = true; changed = true; }
+  if (changed) { saveSectionState(state); applySectionState(state); }
   // Show active file name in status bar
   var label = document.getElementById("statusLabel");
   label.textContent = file ? file.name : "No file";
