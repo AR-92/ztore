@@ -3,126 +3,181 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ztore Playground</title>
+<title>ztore — Online Dev Environment</title>
+<meta name="description" content="Online JavaScript development environment powered by ztore state management">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2358a6ff' stroke-width='2'%3E%3Cpath d='M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z'/%3E%3Cpath d='m3.3 7 8.7 5 8.7-5'/%3E%3Cpath d='M12 22V12'/%3E%3C/svg%3E">
-  <script type="module" crossorigin src="./assets/index-U62RnvPG.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BReD_v8I.css">
+  <script type="module" crossorigin src="./assets/index-DkCRnvjH.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-7cfFx8Ch.css">
 </head>
-<body class="flex flex-col h-screen overflow-hidden bg-gray-950 text-gray-100 font-sans">
+<body class="flex h-screen overflow-hidden bg-gray-950 text-gray-100 font-sans antialiased selection:bg-blue-500/30">
 
-<!-- HEADER -->
-<header class="flex items-center justify-between px-4 py-2.5 border-b border-gray-800 shrink-0 bg-gray-900">
-  <div class="flex items-center gap-2">
-    <i data-lucide="box" class="w-5 h-5 text-blue-400"></i>
-    <span class="font-bold text-base"><span class="text-blue-400">ztore</span> Playground</span>
-    <span class="text-xs px-2 py-0.5 rounded-full bg-gray-800 text-gray-400">v1.0</span>
-    <span class="text-xs text-gray-500">138 lines &middot; zero deps</span>
-  </div>
-  <button id="clearAll" class="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-400 hover:text-gray-300 transition">
-    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
-  </button>
-</header>
+<!-- SIDEBAR -->
+<aside id="sidebar" class="flex flex-col shrink-0 bg-gray-900 border-r border-gray-800/70 relative" style="width:240px">
+  <div id="sidebarResizeHandle" class="resize-handle-sidebar" title="Drag to resize"></div>
 
-<!-- MAIN -->
-<div class="flex flex-1 overflow-hidden">
-
-  <!-- LEFT: EDITOR -->
-  <div class="flex flex-col flex-1 min-w-0 border-r border-gray-800">
-    <div class="flex items-center gap-2 px-3 py-2 border-b border-gray-800 shrink-0 bg-gray-900">
-      <select id="exampleSelect" class="text-xs px-2.5 py-1.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-200 cursor-pointer outline-none">
-        <option value="counter">1. Counter</option>
-        <option value="todo">2. Todo List</option>
-        <option value="auth">3. User Auth</option>
-        <option value="cart">4. Shopping Cart</option>
-        <option value="game">5. Game Health</option>
-        <option value="chat">6. Chat Room</option>
-        <option value="agent" selected>7. AI Agent</option>
-        <option value="form">8. Form State</option>
-        <option value="pubsub">9. Pub/Sub Bus</option>
-        <option value="undo">10. Undo/Redo</option>
-        <option value="pagination">11. Pagination</option>
-        <option value="state-machine">12. State Machine</option>
-      </select>
-      <button id="runBtn" class="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg text-white border border-green-700 bg-green-700 hover:bg-green-600 transition">
-        <i data-lucide="play" class="w-3.5 h-3.5"></i> Run
-      </button>
-      <label class="flex items-center gap-1.5 text-xs cursor-pointer select-none text-gray-400">
-        <input type="checkbox" id="autoRun" checked class="rounded accent-green-500">
-        Auto-run
-      </label>
-      <button id="clearOutput" class="flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-400 hover:text-red-400 transition">
-        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-      </button>
-    </div>
-    <div class="flex-1 overflow-hidden" id="editor-container" style="height:100%"></div>
+  <!-- Branding -->
+  <div class="flex items-center gap-1.5 px-4 py-2 shrink-0 select-none">
+    <i data-lucide="box" class="w-3.5 h-3.5 text-blue-400"></i>
+    <span class="text-xs font-semibold tracking-tight text-gray-400">ztore</span>
+    <span class="text-[9px] text-gray-700">v1.0</span>
+    <button id="sidebarToggle" class="ml-auto flex items-center justify-center w-4 h-4 text-gray-600 hover:text-gray-300 transition-colors rounded-sm" title="Collapse sidebar">
+      <i data-lucide="chevron-left" class="w-3 h-3"></i>
+    </button>
   </div>
 
-  <!-- RIGHT: OUTPUT -->
-  <div class="flex flex-col shrink-0" style="width:480px;min-width:320px;max-width:50%">
+  <!-- Open Tabs Section -->
+  <div class="section-header px-4 py-1.5 shrink-0 mt-0.5 flex items-center gap-1 cursor-pointer select-none" data-section="openTabs">
+    <i data-lucide="chevron-right" class="section-chevron w-3 h-3 text-gray-500 shrink-0"></i>
+    <span class="text-[11px] font-semibold text-gray-500 tracking-wider uppercase flex-1">Open Tabs</span>
+    <button id="newFileBtn" class="section-action flex items-center justify-center w-4 h-4 text-gray-500 hover:text-gray-200 hover:bg-gray-700 transition-all rounded-sm" title="New file">
+      <i data-lucide="plus" class="w-3 h-3"></i>
+    </button>
+  </div>
+  <div id="openTabsList" class="section-content overflow-y-auto shrink-0 collapsed" style="max-height:30%"></div>
 
-    <!-- TABS -->
-    <div class="flex border-b border-gray-800 shrink-0 bg-gray-900">
-      <button class="tab-btn flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium border-b-2 transition cursor-pointer text-gray-400 border-transparent hover:text-gray-200" data-tab="console">
-        <i data-lucide="terminal" class="w-3.5 h-3.5"></i> Console
-      </button>
-      <button class="tab-btn flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium border-b-2 transition cursor-pointer text-blue-400 border-blue-400" data-tab="state">
-        <i data-lucide="database" class="w-3.5 h-3.5"></i> State
-      </button>
-      <button class="tab-btn flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium border-b-2 transition cursor-pointer text-gray-400 border-transparent hover:text-gray-200" data-tab="events">
-        <i data-lucide="zap" class="w-3.5 h-3.5"></i> Events
-      </button>
+  <!-- Explorer Section -->
+  <div class="section-header px-4 py-1.5 shrink-0 mt-0.5 flex items-center gap-1 cursor-pointer select-none" data-section="explorer">
+    <i data-lucide="chevron-right" class="section-chevron w-3 h-3 text-gray-500 shrink-0"></i>
+    <span class="text-[11px] font-semibold text-gray-500 tracking-wider uppercase flex-1">Explorer</span>
+    <button id="newProjectBtn" class="section-action flex items-center justify-center w-4 h-4 text-gray-500 hover:text-gray-200 hover:bg-gray-700 transition-all rounded-sm" title="New project">
+      <i data-lucide="plus" class="w-3 h-3"></i>
+    </button>
+  </div>
+  <div id="projectList" class="section-content flex-1 overflow-y-auto collapsed"></div>
+
+  <!-- Examples Section -->
+  <div class="section-header px-4 py-1.5 shrink-0 mt-0.5 flex items-center gap-1 cursor-pointer select-none" data-section="examples">
+    <i data-lucide="chevron-right" class="section-chevron w-3 h-3 text-gray-500 shrink-0"></i>
+    <span class="text-[11px] font-semibold text-gray-500 tracking-wider uppercase flex-1">Examples</span>
+  </div>
+  <div id="examplesList" class="section-content overflow-y-auto shrink-0 collapsed" style="max-height:35%"></div>
+
+  <!-- Docs Section -->
+  <div class="section-header px-4 py-1.5 shrink-0 mt-0.5 flex items-center gap-1 cursor-pointer select-none" data-section="docs">
+    <i data-lucide="chevron-right" class="section-chevron w-3 h-3 text-gray-500 shrink-0"></i>
+    <span class="text-[11px] font-semibold text-gray-500 tracking-wider uppercase flex-1">Docs</span>
+  </div>
+  <div id="docsList" class="section-content overflow-y-auto shrink-0 collapsed" style="max-height:30%"></div>
+
+  <!-- Footer -->
+  <div class="flex items-center justify-between px-4 py-1.5 border-t border-gray-800/60 shrink-0 mt-auto">
+    <a href="https://github.com/AR-92/ztore" target="_blank" rel="noopener" class="flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors">
+      <i data-lucide="git-branch" class="w-3 h-3"></i>
+      GitHub
+    </a>
+    <span class="text-[10px] text-gray-700">138 lines</span>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="flex flex-col flex-1 min-w-0">
+
+  <!-- EDITOR + OUTPUT SPLIT -->
+  <div class="flex flex-1 overflow-hidden">
+    <div class="flex flex-col flex-1 min-w-0">
+      <div class="flex-1 overflow-hidden relative" id="editor-container">
+        <div id="docsView" class="absolute inset-0 overflow-y-auto p-6 hidden" style="display:none"></div>
+      </div>
     </div>
 
-    <!-- PANELS -->
-    <div class="flex-1 overflow-auto font-mono text-xs">
-
-      <div class="panel hidden flex-col h-full" id="panel-console">
-        <div id="consoleOutput" class="flex-1 overflow-auto"></div>
-        <div id="consoleEmpty" class="flex flex-col items-center justify-center h-full text-gray-500">
-          <i data-lucide="terminal" class="w-8 h-8 mb-2 opacity-30"></i>
-          <span class="text-sm">Output appears here</span>
+    <!-- OUTPUT PANEL -->
+    <div id="outputPanel" class="flex flex-col shrink-0 bg-gray-900/20 border-l border-gray-800/60 relative panel-collapsed" style="width:460px;max-width:50%">
+      <div id="panelResizeHandle" class="resize-handle-panel" title="Drag to resize"></div>
+      <div class="flex-1 overflow-hidden font-mono text-xs relative">
+        <div class="panel hidden absolute inset-0 flex-col overflow-hidden" id="panel-console">
+          <div id="consoleOutput" class="flex-1 overflow-y-auto"></div>
+          <div id="consoleEmpty" class="absolute inset-0 flex flex-col items-center justify-center text-gray-500 pointer-events-none">
+            <div class="w-10 h-10 rounded-xl bg-gray-800/50 flex items-center justify-center mb-2"><i data-lucide="terminal" class="w-5 h-5 opacity-40"></i></div>
+            <span class="text-sm text-gray-600">Output appears here</span>
+            <span class="text-[11px] text-gray-700 mt-1">Run code to see output</span>
+          </div>
         </div>
-      </div>
-
-      <div class="panel flex-col h-full" id="panel-state">
-        <div id="stateOutput" class="flex-1 overflow-auto p-2"></div>
-        <div id="stateEmpty" class="flex flex-col items-center justify-center h-full text-gray-500">
-          <i data-lucide="database" class="w-8 h-8 mb-2 opacity-30"></i>
-          <span class="text-sm">No stores created</span>
+        <div class="panel flex-col absolute inset-0 overflow-hidden" id="panel-state">
+          <div id="stateOutput" class="flex-1 overflow-y-auto p-3 space-y-3"></div>
+          <div id="stateEmpty" class="absolute inset-0 flex flex-col items-center justify-center text-gray-500 pointer-events-none">
+            <div class="w-10 h-10 rounded-xl bg-gray-800/50 flex items-center justify-center mb-2"><i data-lucide="database" class="w-5 h-5 opacity-40"></i></div>
+            <span class="text-sm text-gray-600">No stores created</span>
+            <span class="text-[11px] text-gray-700 mt-1">Create a store to see state here</span>
+          </div>
         </div>
-      </div>
-
-      <div class="panel hidden flex-col h-full" id="panel-events">
-        <div id="eventOutput" class="flex-1 overflow-auto p-2"></div>
-        <div id="eventEmpty" class="flex flex-col items-center justify-center h-full text-gray-500">
-          <i data-lucide="zap" class="w-8 h-8 mb-2 opacity-30"></i>
-          <span class="text-sm">No events emitted</span>
+        <div class="panel hidden absolute inset-0 flex-col overflow-hidden" id="panel-events">
+          <div id="eventOutput" class="flex-1 overflow-y-auto"></div>
+          <div id="eventEmpty" class="absolute inset-0 flex flex-col items-center justify-center text-gray-500 pointer-events-none">
+            <div class="w-10 h-10 rounded-xl bg-gray-800/50 flex items-center justify-center mb-2"><i data-lucide="zap" class="w-5 h-5 opacity-40"></i></div>
+            <span class="text-sm text-gray-600">No events emitted</span>
+            <span class="text-[11px] text-gray-700 mt-1">Events appear when stores emit them</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- STATUSBAR -->
+  <footer class="flex items-center px-3 py-[3px] border-t border-gray-800/60 shrink-0 text-[11px] bg-gray-900/50 text-gray-500 gap-3">
+    <button id="statusSidebarToggle" class="flex items-center justify-center text-gray-600 hover:text-gray-300 transition-colors cursor-pointer py-[1px]" title="Toggle sidebar">
+      <i data-lucide="chevron-left" class="w-2.5 h-2.5"></i>
+    </button>
+    <span class="w-[1px] h-3 bg-gray-800 shrink-0"></span>
+    <button id="runBtn" class="flex items-center gap-1 text-gray-500 hover:text-gray-300 transition-colors cursor-pointer py-[1px]">
+      <i data-lucide="play" class="w-2.5 h-2.5"></i>
+      <span>Run</span>
+    </button>
+    <label class="flex items-center gap-1 cursor-pointer select-none text-gray-600 hover:text-gray-400 transition-colors py-[1px]">
+      <input type="checkbox" id="autoRun" checked class="w-2 h-2 rounded-[1px] border-gray-600 bg-gray-700 text-green-500 accent-green-500 focus:ring-0 cursor-pointer">
+      <span>Auto</span>
+    </label>
+    <span class="flex items-center gap-1 text-gray-600">
+      <span id="statusDot" class="w-1.5 h-1.5 rounded-full inline-block bg-gray-600"></span>
+      <span id="statusLabel">Ready</span>
+    </span>
+    <span class="flex items-center gap-1 text-gray-600">
+      <i data-lucide="hard-drive" class="w-2.5 h-2.5"></i>
+      <span id="saveStatus">Saved</span>
+    </span>
+    <span class="flex-1"></span>
+    <button id="clearOutput" class="flex items-center justify-center text-gray-600 hover:text-gray-400 transition-colors cursor-pointer py-[1px]" title="Clear output">
+      <i data-lucide="trash-2" class="w-2.5 h-2.5"></i>
+    </button>
+    <span class="w-[1px] h-3 bg-gray-800 shrink-0"></span>
+    <button id="statusPanelToggle" class="flex items-center justify-center text-gray-600 hover:text-gray-300 transition-colors cursor-pointer py-[1px]" title="Toggle panel">
+      <i data-lucide="chevron-left" class="w-2.5 h-2.5"></i>
+    </button>
+    <span class="w-[1px] h-3 bg-gray-800 shrink-0"></span>
+    <button class="status-tab text-gray-500 hover:text-gray-300 transition-colors cursor-pointer py-[1px]" data-tab="console">Console</button>
+    <button class="status-tab text-blue-400 transition-colors cursor-pointer py-[1px]" data-tab="state">State</button>
+    <button class="status-tab text-gray-500 hover:text-gray-300 transition-colors cursor-pointer py-[1px]" data-tab="events">Events</button>
+    <span class="flex items-center gap-1 text-gray-600">
+      <i data-lucide="box" class="w-2.5 h-2.5"></i>
+      <span id="storeCount" class="tabular-nums">0</span>
+    </span>
+    <span class="flex items-center gap-1 text-gray-600">
+      <i data-lucide="git-commit" class="w-2.5 h-2.5"></i>
+      <span id="updateCount" class="tabular-nums">0</span>
+    </span>
+    <span class="flex items-center gap-1 text-gray-600">
+      <i data-lucide="activity" class="w-2.5 h-2.5"></i>
+      <span id="eventCount" class="tabular-nums">0</span>
+    </span>
+  </footer>
 </div>
 
-<!-- STATUSBAR -->
-<div class="flex items-center justify-between px-4 py-1.5 border-t border-gray-800 shrink-0 text-xs bg-gray-900 text-gray-500">
-  <span id="statusText">Ready</span>
-  <div class="flex items-center gap-4">
-    <span class="flex items-center gap-1.5">
-      <span id="statusDot" class="w-2 h-2 rounded-full inline-block bg-gray-600"></span>
-      <span id="storeCount">0</span> stores
-    </span>
-    <span class="flex items-center gap-1">
-      <i data-lucide="git-commit" class="w-3 h-3"></i>
-      <span id="updateCount">0</span>
-    </span>
-    <span class="flex items-center gap-1">
-      <i data-lucide="activity" class="w-3 h-3"></i>
-      <span id="eventCount">0</span>
-    </span>
-    <span class="flex items-center gap-1">
-      <i data-lucide="code" class="w-3 h-3"></i>
-      <span id="ztoreSize">138</span> lines
-    </span>
+<!-- MODALS -->
+<div id="modalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center" style="display:none">
+  <div id="modalBox" class="bg-gray-900 border border-gray-700/60 rounded-xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
+    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-800">
+      <span id="modalTitle" class="text-sm font-semibold text-gray-200"></span>
+      <button id="modalClose" class="w-6 h-6 flex items-center justify-center rounded-md text-gray-500 hover:text-gray-200 hover:bg-gray-800 transition-all">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <div class="p-4">
+      <input id="modalInput" type="text" class="w-full text-sm px-3 py-2 rounded-lg border border-gray-700 bg-gray-800 text-gray-200 outline-none placeholder-gray-500 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 transition-colors" placeholder="">
+      <div id="modalError" class="text-xs text-red-400 mt-1.5 hidden"></div>
+    </div>
+    <div class="flex justify-end gap-2 px-4 py-3 border-t border-gray-800 bg-gray-900/50">
+      <button id="modalCancel" class="text-xs px-3 py-1.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-400 hover:text-gray-200 transition-all">Cancel</button>
+      <button id="modalConfirm" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white bg-blue-600 hover:bg-blue-500 transition-all">Confirm</button>
+    </div>
   </div>
 </div>
 
