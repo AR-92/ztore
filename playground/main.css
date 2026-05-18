@@ -81,7 +81,7 @@
 .open-tab-item .close-tab-btn:active { color: #f87171; }
 
 /* ── Explorer tree ── */
-#projectList { padding: 2px 0; }
+#explorerList { padding: 2px 0; }
 .project-item {
   display: flex; align-items: center; gap: 5px;
   padding: 2px 8px 2px 12px; cursor: pointer;
@@ -202,6 +202,7 @@
   height: 22px; display: flex; align-items: center;
 }
 .example-item:hover { color: #3fb950; }
+.example-item.active { color: #3fb950; }
 
 /* ── Docs sidebar items ── */
 .doc-item {

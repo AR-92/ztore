@@ -169,7 +169,7 @@ function renderOpenTabs() {
 
 // Render sidebar project list
 function renderSidebar() {
-  const container = document.getElementById("projectList");
+  const container = document.getElementById("explorerList");
   const data = pm.getAll();
   const projects = Object.values(data.projects).sort((a, b) => b.updatedAt - a.updatedAt);
 
@@ -252,6 +252,8 @@ function renderExamples() {
     div.dataset.example = key;
     div.textContent = EXAMPLE_LABELS[key] || key;
     div.addEventListener("click", function() {
+      document.querySelectorAll(".example-item").forEach(function(e) { e.classList.remove("active"); });
+      div.classList.add("active");
       var name = EXAMPLE_LABELS[key] || key;
       pm.createProject(name, EXAMPLES[key]);
       loadActiveProject();
@@ -368,7 +370,7 @@ function createProjectHandler() {
 }
 
 function pickExample(projectName) {
-  const container = document.getElementById("projectList");
+  const container = document.getElementById("explorerList");
   // Simple inline picker
   const picker = document.createElement("div");
   picker.className = "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm";
