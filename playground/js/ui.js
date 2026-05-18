@@ -159,8 +159,8 @@ function renderOpenTabs() {
       }
       if (file.id !== proj.activeFile) {
         pm.setActiveFile(proj.id, file.id);
-        loadActiveProject();
       }
+      loadActiveProject();
     });
     container.appendChild(div);
   });
@@ -214,8 +214,8 @@ function renderSidebar() {
         fi.addEventListener("click", function(e) {
           if (file.id !== proj.activeFile) {
             pm.setActiveFile(proj.id, file.id);
-            loadActiveProject();
           }
+          loadActiveProject();
         });
         tree.appendChild(fi);
       });
