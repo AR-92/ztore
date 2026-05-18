@@ -7,6 +7,12 @@ import { executeCode, playground } from './engine.js';
 import { EXAMPLES } from './examples.js';
 import { marked } from 'marked';
 import { DOCS, DOC_LABELS, DOC_ORDER, EXAMPLE_LABELS } from './docs.js';
+import ztoreSource from '../../src/ztore.js?raw';
+
+// Add the ztore source code as a doc page
+DOCS.ztoreSource = '## Library Source (`src/ztore.js`)\n\n```js\n' + ztoreSource + '\n```';
+DOC_LABELS.ztoreSource = 'ztore Source';
+DOC_ORDER.push('ztoreSource');
 import '../main.css';
 import 'highlight.js/styles/atom-one-dark.css';
 
@@ -243,17 +249,18 @@ function renderDocs() {
 }
 
 // Render sidebar examples list
+var _activeExample = null;
+
 function renderExamples() {
   var container = document.getElementById("examplesList");
   container.innerHTML = "";
   Object.keys(EXAMPLES).forEach(function(key) {
     var div = document.createElement("div");
-    div.className = "example-item";
+    div.className = "example-item" + (key === _activeExample ? " active" : "");
     div.dataset.example = key;
     div.textContent = EXAMPLE_LABELS[key] || key;
     div.addEventListener("click", function() {
-      document.querySelectorAll(".example-item").forEach(function(e) { e.classList.remove("active"); });
-      div.classList.add("active");
+      _activeExample = key;
       var name = EXAMPLE_LABELS[key] || key;
       pm.createProject(name, EXAMPLES[key]);
       loadActiveProject();
@@ -308,7 +315,16 @@ function loadActiveProject() {
   renderSidebar();
   renderOpenTabs();
   updateSaveStatus();
-  document.getElementById("statusLabel").textContent = "Ready";
+  // Ensure Open Tabs section is expanded when a file is loaded
+  var state = getSectionState();
+  if (!state.openTabs) {
+    state.openTabs = true;
+    saveSectionState(state);
+    applySectionState(state);
+  }
+  // Show active file name in status bar
+  var label = document.getElementById("statusLabel");
+  label.textContent = file ? file.name : "No file";
 }
 
 // ============================================================
